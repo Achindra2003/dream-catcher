@@ -54,7 +54,7 @@ Edit `.env` and add your Google Gemini API key:
 
 ```
 GEMINI_API_KEY=your_gemini_api_key_here
-GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MODEL=gemini-3.8-flash
 PORT=3001
 ```
 
@@ -102,7 +102,7 @@ Make sure your code is in a Git repository (GitHub, GitLab, etc.)
 
 In the Render dashboard, add:
 - `GEMINI_API_KEY`: Your Google Gemini API key
-- `GEMINI_MODEL`: `gemini-2.5-flash`
+- `GEMINI_MODEL`: `gemini-3.8-flash`
 - `NODE_ENV`: `production`
 
 ### 4. Deploy
