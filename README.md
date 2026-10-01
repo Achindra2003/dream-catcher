@@ -81,33 +81,40 @@ The app will be available at `http://localhost:3001`
 - `POST /api/dreams` - Create a new dream (requires `dream_text` in body)
 - `DELETE /api/dreams/:id` - Delete a dream
 
-## Deployment to Render
+## Docker Deployment
 
-### 1. Prepare Your Repository
+### 1. Build and Run with Docker Locally
 
-Make sure your code is in a Git repository (GitHub, GitLab, etc.)
+Build image:
+```bash
+docker build -t dream-catcher .
+```
 
-### 2. Create a New Web Service on Render
+Run container:
+```bash
+docker run -d -p 3001:3001 --env-file .env --name dream-catcher dream-catcher
+```
 
-1. Go to https://render.com and sign in
-2. Click "New +" and select "Web Service"
-3. Connect your repository
+Or using Docker Compose:
+```bash
+docker compose up -d --build
+```
+
+### 2. Deploy Docker Container to Render
+
+1. Go to https://render.com and sign in.
+2. Click **New +** -> **Web Service**.
+3. Connect your repository: `Achindra2003/dream-catcher`.
 4. Configure the service:
-   - **Name**: dream-journal (or your choice)
-   - **Environment**: Node
-   - **Build Command**: `npm ci --omit=dev --build-from-source`
-   - **Start Command**: `npm start`
-
-### 3. Add Environment Variables
-
-In the Render dashboard, add:
-- `GEMINI_API_KEY`: Your Google Gemini API key
-- `GEMINI_MODEL`: `gemini-3.8-flash`
-- `NODE_ENV`: `production`
-
-### 4. Deploy
-
-Click "Create Web Service" and Render will deploy your app automatically.
+   - **Name**: `dream-catcher`
+   - **Runtime**: **Docker** (Render detects the `Dockerfile` automatically)
+   - **Instance Type**: Free
+5. Under **Environment Variables**, add:
+   - `GEMINI_API_KEY`: *(your Gemini API key)*
+   - `GEMINI_MODEL`: `gemini-3.5-flash`
+   - `NODE_ENV`: `production`
+   - `PORT`: `3001`
+6. Click **Deploy Web Service**. Render will automatically build the multi-stage Docker image and launch the container.
 
 ### 5. Database Persistence
 

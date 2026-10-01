@@ -1,0 +1,23 @@
+# Dependencies and build artifacts
+node_modules
+npm-debug.log*
+
+# Git and VCS
+.git
+.gitignore
+
+# Environment secrets
+.env*
+!.env.example
+
+# Local SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Documentation and metadata
+*.md
+.DS_Store
+Thumbs.db
+.vscode
+.idea
