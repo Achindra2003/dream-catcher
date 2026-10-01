@@ -95,13 +95,15 @@ Make sure your code is in a Git repository (GitHub, GitLab, etc.)
 4. Configure the service:
    - **Name**: dream-journal (or your choice)
    - **Environment**: Node
-   - **Build Command**: `npm install`
+   - **Build Command**: `npm ci --omit=dev --build-from-source`
    - **Start Command**: `npm start`
 
 ### 3. Add Environment Variables
 
 In the Render dashboard, add:
-- `ANTHROPIC_API_KEY`: Your Anthropic API key
+- `GEMINI_API_KEY`: Your Google Gemini API key
+- `GEMINI_MODEL`: `gemini-2.5-flash`
+- `NODE_ENV`: `production`
 
 ### 4. Deploy
 

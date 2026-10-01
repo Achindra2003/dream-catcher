@@ -3,7 +3,7 @@ services:
     name: dream-catcher
     runtime: node
     plan: free
-    buildCommand: npm install
+    buildCommand: npm ci --omit=dev --build-from-source
     startCommand: npm start
     envVars:
       - key: NODE_ENV
