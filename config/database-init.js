@@ -1,15 +1,14 @@
-import { getDatabase } from './database.js';
+import { getPool } from './database.js';
 
 // Create dreams table if it doesn't exist
 export async function initDatabase() {
   try {
-    const db = await getDatabase();
-    await db.exec(`
+    await getPool().query(`
       CREATE TABLE IF NOT EXISTS dreams (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id SERIAL PRIMARY KEY,
         dream_text TEXT NOT NULL,
         interpretation TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
       )
     `);
   } catch (error) {

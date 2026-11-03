@@ -8,14 +8,14 @@ A full-stack web application that allows users to record their dreams and receiv
 - Get AI interpretations of your dreams
 - View all past dreams and their interpretations
 - Delete dreams
-- SQLite database for persistent storage
+- PostgreSQL (Render managed) for persistent storage
 - Vanilla JavaScript frontend
 - Express backend with RESTful API
 
 ## Tech Stack
 
 - **Backend**: Node.js, Express
-- **Database**: SQLite (sqlite3 / sqlite)
+- **Database**: PostgreSQL (pg)
 - **Frontend**: HTML, CSS, Vanilla JavaScript
 - **AI**: Google Gemini API (@google/genai)
 
