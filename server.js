@@ -2,8 +2,8 @@ import 'dotenv/config';
 import app from './app.js';
 import { initDatabase } from './config/database-init.js';
 
-console.log('Gemini key loaded:', !!process.env.GEMINI_API_KEY);
-console.log('Gemini model:', process.env.GEMINI_MODEL);
+console.log('Groq key loaded:', !!process.env.GROQ_API_KEY);
+console.log('Groq model:', process.env.GROQ_MODEL);
 console.log('Database configured:', !!process.env.DATABASE_URL);
 
 const PORT = process.env.PORT || 3001;

@@ -12,9 +12,9 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: GEMINI_MODEL
-        value: gemini-2.5-flash
-      - key: GEMINI_API_KEY
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
+      - key: GROQ_API_KEY
         sync: false
       - key: DATABASE_URL
         fromDatabase:
@@ -33,9 +33,9 @@ services:
     envVars:
       - key: NODE_ENV
         value: staging
-      - key: GEMINI_MODEL
-        value: gemini-2.5-flash
-      - key: GEMINI_API_KEY
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
+      - key: GROQ_API_KEY
         sync: false
       - key: DATABASE_URL
         sync: false

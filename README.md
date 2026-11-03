@@ -1,6 +1,6 @@
 # Dream Journal App
 
-A full-stack web application that allows users to record their dreams and receive AI-powered interpretations using Google Gemini.
+A full-stack web application that allows users to record their dreams and receive AI-powered interpretations using Groq (Llama 3.3).
 
 ## Features
 
@@ -17,7 +17,7 @@ A full-stack web application that allows users to record their dreams and receiv
 - **Backend**: Node.js, Express
 - **Database**: PostgreSQL (pg)
 - **Frontend**: HTML, CSS, Vanilla JavaScript
-- **AI**: Google Gemini API (@google/genai)
+- **AI**: Groq (Llama 3.3) API (openai SDK pointed at Groq)
 
 ## Project Structure
 
@@ -50,11 +50,11 @@ Create a `.env` file in the root directory:
 cp .env.example .env
 ```
 
-Edit `.env` and add your Google Gemini API key:
+Edit `.env` and add your Groq (Llama 3.3) API key:
 
 ```
-GEMINI_API_KEY=your_gemini_api_key_here
-GEMINI_MODEL=gemini-3.8-flash
+GROQ_API_KEY=your_groq_api_key_here
+GROQ_MODEL=llama-3.3-70b-versatile
 PORT=3001
 ```
 
@@ -110,8 +110,8 @@ docker compose up -d --build
    - **Runtime**: **Docker** (Render detects the `Dockerfile` automatically)
    - **Instance Type**: Free
 5. Under **Environment Variables**, add:
-   - `GEMINI_API_KEY`: *(your Gemini API key)*
-   - `GEMINI_MODEL`: `gemini-3.5-flash`
+   - `GROQ_API_KEY`: *(your Groq API key)*
+   - `GROQ_MODEL`: `llama-3.3-70b-versatile`
    - `NODE_ENV`: `production`
    - `PORT`: `3001`
 6. Click **Deploy Web Service**. Render will automatically build the multi-stage Docker image and launch the container.

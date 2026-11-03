@@ -1,6 +1,6 @@
 import express from 'express';
 import { getPool } from '../config/database.js';
-import { getDreamInterpretation } from '../utils/ai-gemini.js'; // or '../utils/ai-gemini.js' if using Gemini
+import { getDreamInterpretation } from '../utils/ai-groq.js';
 import { validateText } from '../utils/validateText.js'
 
 const router = express.Router();
