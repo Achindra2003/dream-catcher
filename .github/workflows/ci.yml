@@ -9,6 +9,19 @@ on:
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: dreams
+          POSTGRES_PASSWORD: dreams
+          POSTGRES_DB: dreams
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U dreams"
+          --health-interval 5s
+          --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -21,6 +34,7 @@ jobs:
         run: docker build -t dream-catcher:ci .
       - name: Container smoke test (/health)
         run: |
-          docker run -d --name dc -p 3001:3001 -e DATABASE_URL=postgres://x:x@localhost:5432/x dream-catcher:ci
-          sleep 5
+          docker run -d --name dc --network host -e PORT=3001 -e DATABASE_URL=postgres://dreams:dreams@localhost:5432/dreams dream-catcher:ci
+          sleep 6
           curl -fsS http://localhost:3001/health
+          curl -fsS http://localhost:3001/ready
