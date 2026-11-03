@@ -1,33 +1,35 @@
-import sqlite3 from 'sqlite3';
-import { open } from 'sqlite';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import pg from 'pg';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const { Pool } = pg;
 
-const dbPath = process.env.DATABASE_PATH || join(dirname(__dirname), 'dreams.db');
+let pool = null;
 
-let db = null;
-
-export async function getDatabase() {
-  if (!db) {
-    db = await open({
-      filename: dbPath,
-      driver: sqlite3.Database
-    });
-    
-    // Enable foreign keys
-    await db.exec('PRAGMA foreign_keys = ON');
+function buildConfig() {
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    throw new Error('DATABASE_URL is not set. Point it at a Postgres instance (see .env.example).');
   }
-  return db;
+  // Render's managed Postgres requires TLS; local Postgres (docker-compose) does not.
+  const isLocal = /@(localhost|127\.0\.0\.1|db)(:|\/)/.test(connectionString);
+  return {
+    connectionString,
+    ssl: isLocal ? false : { rejectUnauthorized: false },
+    max: 5
+  };
+}
+
+export function getPool() {
+  if (!pool) {
+    pool = new Pool(buildConfig());
+  }
+  return pool;
 }
 
 export async function closeDatabase() {
-  if (db) {
-    await db.close();
-    db = null;
+  if (pool) {
+    await pool.end();
+    pool = null;
   }
 }
 
-export default { getDatabase, closeDatabase };
+export default { getPool, closeDatabase };

@@ -1,21 +1,36 @@
 services:
+  db:
+    image: postgres:16-alpine
+    container_name: dream-catcher-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: dreams
+      POSTGRES_PASSWORD: dreams
+      POSTGRES_DB: dreams
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dreams"]
+      interval: 5s
+      retries: 10
+
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     container_name: dream-catcher
     restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
       - "3001:3001"
     environment:
-      - NODE_ENV=production
-      - PORT=3001
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-3.5-flash}
-    volumes:
-      - dream-data:/app
-    env_file:
-      - .env
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: postgres://dreams:dreams@db:5432/dreams
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      GROQ_MODEL: ${GROQ_MODEL:-llama-3.3-70b-versatile}
 
 volumes:
-  dream-data:
+  pg-data:

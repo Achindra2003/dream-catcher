@@ -1,16 +1,47 @@
+# Render Blueprint: production + staging web services and Postgres, as code.
 services:
   - type: web
     name: dream-catcher
-    runtime: docker
+    runtime: node
     plan: free
-    dockerfilePath: ./Dockerfile
-    dockerContext: .
+    branch: main
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeployTrigger: checksPass
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 3001
-      - key: GEMINI_MODEL
-        value: gemini-3.5-flash
-      - key: GEMINI_API_KEY
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
+      - key: GROQ_API_KEY
         sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: dream-catcher-db
+          property: connectionString
+
+  - type: web
+    name: dream-catcher-stage
+    runtime: node
+    plan: free
+    branch: stage
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: NODE_ENV
+        value: staging
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
+      - key: GROQ_API_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+
+databases:
+  - name: dream-catcher-db
+    plan: free
+    databaseName: dreams
+    user: dreams_user
