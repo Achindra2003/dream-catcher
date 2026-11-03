@@ -1,19 +1,13 @@
-# Render Blueprint: production + staging web services and Postgres, as code.
+# Render Blueprint (reference): production + staging Docker web services and Postgres.
 services:
   - type: web
-    name: dream-catcher
-    runtime: node
+    name: dream-catcher-2          # production, tracks main
+    runtime: docker
     plan: free
     branch: main
-    buildCommand: npm ci --omit=dev
-    startCommand: npm start
+    dockerfilePath: ./Dockerfile
     healthCheckPath: /health
-    autoDeployTrigger: checksPass
     envVars:
-      - key: NODE_ENV
-        value: production
-      - key: GROQ_MODEL
-        value: llama-3.3-70b-versatile
       - key: GROQ_API_KEY
         sync: false
       - key: DATABASE_URL
@@ -22,22 +16,16 @@ services:
           property: connectionString
 
   - type: web
-    name: dream-catcher-stage
-    runtime: node
+    name: dream-catcher-stage      # staging, tracks the stage branch
+    runtime: docker
     plan: free
     branch: stage
-    buildCommand: npm ci --omit=dev
-    startCommand: npm start
+    dockerfilePath: ./Dockerfile
     healthCheckPath: /health
-    autoDeployTrigger: checksPass
     envVars:
-      - key: NODE_ENV
-        value: staging
-      - key: GROQ_MODEL
-        value: llama-3.3-70b-versatile
       - key: GROQ_API_KEY
         sync: false
-      - key: DATABASE_URL
+      - key: DATABASE_URL        # points at the separate dreams_stage database
         sync: false
 
 databases:
