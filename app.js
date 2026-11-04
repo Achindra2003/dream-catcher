@@ -1,4 +1,5 @@
 import express from 'express';
+import helmet from 'helmet';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { getPool } from './config/database.js';
@@ -7,6 +8,19 @@ import dreamsRouter from './routes/dreams.js';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
+
+// Security headers in production (CSP relaxed for Google Fonts and inline styles)
+if (process.env.NODE_ENV === 'production') {
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+        'font-src': ["'self'", 'https://fonts.gstatic.com']
+      }
+    }
+  }));
+}
 
 app.use(express.json());
 app.use(express.static(join(__dirname, 'public')));
